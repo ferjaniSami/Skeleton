@@ -12,6 +12,7 @@ return array(
 		'Artist',
 		'ZendDeveloperTools',
 		'BjyProfiler',
+		'Aggregator',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
