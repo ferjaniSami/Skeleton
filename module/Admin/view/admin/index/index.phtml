@@ -1,0 +1,3 @@
+<?php if($user = $this->identity()): ?>
+<?php echo $this->translate('Welcome') ?> <?php echo $this->escapeHtml($user->getName()) ?>
+<?php endif; ?>

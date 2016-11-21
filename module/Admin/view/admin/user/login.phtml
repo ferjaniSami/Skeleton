@@ -1,0 +1,37 @@
+<?php 
+
+$form = $this->form;
+$form->prepare();
+
+?>
+
+<?php echo $this->form()->openTag($form); ?>
+    <div class="form-group">
+        <?php echo $this->formText($form->get('login')) ?>
+    </div>
+    <div class="form-group">
+        <?php echo $this->formPassword($form->get('password')) ?>
+    </div>
+    <div class="form-group">
+        <div class="checkbox i-checks">
+            <label><?php echo $this->formCheckbox($form->get('rememberme')) ?> <?php echo $this->formLabel($form->get('rememberme')) ?></label>
+        </div>
+    </div>
+    <?php echo $this->formSubmit($form->get('submit')) ?>
+<?php echo $this->form()->closeTag(); ?>
+<p class="m-t">
+	<small>&copy; <?php echo date('Y') ?> <?php echo $this->translate('by') ?> <a href="http://uzik.com" target="_blank">Uzik</a>. <?php echo $this->translate('All rights reserved.') ?></small>
+</p>
+
+<?php $this->inlineScript()->prependFile($this->basePath() . '/js/plugins/iCheck/icheck.min.js'); ?>
+
+<?php $this->inlineScript()->captureStart();
+echo <<<JS
+    $(document).ready(function(){
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_flat',
+            radioClass: 'iradio_flat',
+        });
+    });
+JS;
+$this->inlineScript()->captureEnd(); ?>

@@ -1,0 +1,78 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <?php echo $this->headTitle($this->translate('FU 2 Admin'))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <!-- Metas -->
+        <?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Styles -->
+        <?php echo $this->headLink()
+            /* DEFAULT */
+            ->appendStylesheet($this->basePath() . '/css/bootstrap.min.css')
+            ->appendStylesheet($this->basePath() . '/font-awesome/css/font-awesome.css')
+            ->appendStylesheet($this->basePath() . '/css/animate.css')
+            /* PLUGINS */
+            ->appendStylesheet($this->basePath() . '/css/plugins/iCheck/custom.css')
+            /* THEME */
+            ->appendStylesheet($this->basePath() . '/css/style.min.css')
+        ; ?>
+
+    </head>
+    <body class="skin-uzik gray-bg">
+
+        <div class="middle-box text-center">
+        <div>
+            <div>
+                <h1><img alt="image" class="" width="80" src="<?php echo $this->basePath('/img/uzik-black.png') ?>"></h1>
+            </div>
+            <?php
+
+                $flash = $this->flashMessenger();
+                $flash->setMessageOpenFormat('<div%s>
+                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                         &times;
+                     </button>')
+                    ->setMessageSeparatorString('<br>')
+                    ->setMessageCloseString('</div>');
+
+                echo $flash->renderCurrent('error',   array('alert', 'alert-dismissable', 'alert-danger'));
+                echo $flash->renderCurrent('warning', array('alert', 'alert-dismissable', 'alert-warning'));
+                echo $flash->renderCurrent('info',    array('alert', 'alert-dismissable', 'alert-info'));
+                echo $flash->renderCurrent('default', array('alert', 'alert-dismissable', 'alert-warning'));
+                echo $flash->renderCurrent('success', array('alert', 'alert-dismissable', 'alert-success'));
+                $flash->clearCurrentMessagesFromNamespace('error');
+                $flash->clearCurrentMessagesFromNamespace('warning');
+                $flash->clearCurrentMessagesFromNamespace('info');
+                $flash->clearCurrentMessagesFromNamespace('default');
+                $flash->clearCurrentMessagesFromNamespace('success');
+
+            ?>
+            <?php echo $this->content; ?>
+        </div>
+    </div>
+
+        <!-- Scripts -->
+        <?php echo $this->headScript()
+            /* DEFAULT */
+            ->appendFile($this->basePath() . '/js/plugins/jquery-1.10.2.js')
+            ->appendFile($this->basePath() . '/js/plugins/jquery-ui/jquery-ui.min.js')
+            ->appendFile($this->basePath() . '/js/plugins/bootstrap.min.js')
+            ->appendFile($this->basePath() . '/js/plugins/metisMenu/jquery.metisMenu.js')
+            ->appendFile($this->basePath() . '/js/plugins/slimscroll/jquery.slimscroll.min.js')
+            ->appendFile($this->basePath() . '/js/plugins/pace/pace.min.js')
+            /* PLUGINS */
+            /* THEME */
+            ->appendFile($this->basePath() . '/js/app/inspinia.js')
+        ; ?>
+
+        <!-- Inline Scripts -->
+        <?php echo $this->inlineScript() ?>
+    </body>
+</html>

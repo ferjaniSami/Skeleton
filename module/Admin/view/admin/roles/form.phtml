@@ -1,0 +1,79 @@
+<?php 
+
+$form = $this->form;
+$form->prepare();
+
+?>
+
+<?php echo $this->form()->openTag($form); ?>
+	<?php echo $this->adminFormRow($form->get('label')) ?>
+    <?php echo $this->adminFormRow($form->get('description')) ?>
+    <?php echo $this->adminFormRow($form->get('name')) ?>
+    <?php echo $this->adminFormRowLabel($form->get('acl')) ?>
+    <table class="table table-bordered">
+    	<thead>
+		    <tr>
+		        <th><?php echo $this->translate('Controller') ?></th>
+		        <th><?php echo $this->translate('Actions') ?></th>
+		    </tr>
+		</thead>
+		<tbody>
+    <?php foreach($this->actions as $controller => $actions): ?>
+			<tr>
+				<td><?php echo $controller ?></td>
+				<td>
+					<?php foreach($actions as $action): ?>
+					<?php $aclCheckbox = $form->get('acl'); $aclCheckbox->setValueOptions(array(str_replace('\\', '-', $controller) . '_' . $action => $action)) ?>
+					<?php echo $this->formMultiCheckbox($aclCheckbox) ?><br>
+					<?php endforeach; ?>
+				</td>
+			</tr>
+	<?php endforeach; ?>
+		</tbody>
+	</table>
+	<?php echo $this->adminFormRowLabel($form->get('territories')) ?>
+    <table class="table table-bordered">
+    	<thead>
+		    <tr>
+		        <th><?php echo $this->translate('Territories') ?></th>
+		        <th><?php echo $this->translate('Langs') ?></th>
+		    </tr>
+		</thead>
+		<tbody>
+    <?php foreach($this->territories as $territory): ?>
+			<tr>
+				<td><?php echo $territory->getName() ?></td>
+				<td>
+					<?php $territoryLangs = \Zend\Json\Json::decode($territory->getLangs()) ?>
+					<?php foreach($territoryLangs as $lang): ?>
+					<?php $territoryCheckbox = $form->get('territories'); $territoryCheckbox->setValueOptions(array($territory->getUrlCode() . '-' . $lang => $this->lang_labels[$lang] . ' (' . $territory->getUrlCode() . '-' . $lang . ')')) ?>
+					<?php echo $this->formMultiCheckbox($territoryCheckbox) ?><br>
+					<?php endforeach; ?>
+				</td>
+			</tr>
+	<?php endforeach; ?>
+		</tbody>
+	</table>
+	<?php echo $this->adminFormRowLabel($form->get('langs')) ?>
+    <table class="table table-bordered">
+    	<thead>
+		    <tr>
+		        <th><?php echo $this->translate('Langs') ?></th>
+		        <th>&nbsp;</th>
+		    </tr>
+		</thead>
+		<tbody>
+    <?php foreach($this->langs as $lang): ?>
+			<tr>
+				<td><?php echo $this->lang_labels[$lang] ?></td>
+				<td>
+					<?php $langCheckbox = $form->get('langs'); $langCheckbox->setValueOptions(array($lang => $lang)) ?>
+					<?php echo $this->formMultiCheckbox($langCheckbox) ?><br>
+				</td>
+			</tr>
+	<?php endforeach; ?>
+		</tbody>
+	</table>
+    <?php echo $this->adminFormRow($form->get('status'), 'append') ?>
+	<?php echo $this->formSubmit($form->get('submit')) ?>
+<?php echo $this->form()->closeTag(); ?>

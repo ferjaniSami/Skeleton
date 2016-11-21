@@ -1,0 +1,29 @@
+<?php 
+
+$form = $this->form;
+$form->prepare();
+
+?>
+
+<?php echo $this->form()->openTag($form); ?>
+	<?php echo $this->adminFormRow($form->get('name')) ?>
+    <?php echo $this->adminFormRow($form->get('url_code')) ?>
+    <?php echo $this->adminFormRow($form->get('langs')) ?>
+    <?php echo $this->adminFormRow($form->get('default_lang')) ?>
+    <?php echo $this->adminFormRow($form->get('status'), 'append') ?>
+	<?php echo $this->formSubmit($form->get('submit')) ?>
+<?php echo $this->form()->closeTag(); ?>
+
+<?php $this->inlineScript()->captureStart();
+echo <<<JS
+    $(document).ready(function(){
+    	$('#langs').chosen().change(function(){
+    		$('#default_lang option').remove();
+    		$.each($(this).val(), function(index, value){
+				$('#default_lang').append('<option value="' + value + '">' + $('#langs option[value=' + value + ']').text() + '</option>');
+    		});
+			$('#default_lang').trigger('chosen:updated');
+    	});
+    });
+JS;
+$this->inlineScript()->captureEnd(); ?>

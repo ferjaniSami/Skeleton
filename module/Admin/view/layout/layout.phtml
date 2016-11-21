@@ -1,0 +1,168 @@
+<?php echo $this->doctype(); ?>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <?php echo $this->headTitle($this->translate('FU 2 Admin'))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <!-- Metas -->
+        <?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Styles -->
+        <?php echo $this->headLink()
+            /* DEFAULT */
+            ->appendStylesheet($this->basePath() . '/css/bootstrap.min.css')
+            ->appendStylesheet($this->basePath() . '/font-awesome/css/font-awesome.css')
+            ->appendStylesheet($this->basePath() . '/css/animate.css')
+            /* PLUGINS */
+            ->appendStylesheet($this->basePath() . '/css/plugins/iCheck/custom.css')
+            ->appendStylesheet($this->basePath() . '/css/plugins/dataTables/dataTables.bootstrap.css')
+            ->appendStylesheet($this->basePath() . '/css/plugins/chosen/chosen.css')
+            /* THEME */
+            ->appendStylesheet($this->basePath() . '/css/style.min.css')
+        ; ?>
+
+    </head>
+    <body class="skin-uzik">
+
+        <div id="wrapper">
+
+            <nav class="navbar-default navbar-static-side" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <?php if($user = $this->identity()): ?>
+                        <li class="nav-header">
+
+                            <div class="dropdown profile-element"> <span>
+                                <img alt="image" class="" width="48" src="<?php echo $this->basePath('/img/uzik.png') ?>">
+                                 </span>
+                                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold"><?php echo $this->escapeHtml($user->getName()) ?></strong>
+                                 </span> <span class="text-muted text-xs block"><?php echo $this->escapeHtml($user->getLogin()) ?> <b class="caret"></b></span> </span> </a>
+                                <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                    <li><a href="<?php echo $this->url('admin/default', array('action' => 'index', 'controller' => 'user')) ?>">Profile</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="<?php echo $this->url('admin/default', array('action' => 'logout', 'controller' => 'user')) ?>">Logout</a></li>
+                                </ul>
+                            </div>
+                            <div class="logo-element">
+                                <img alt="image" class="" height="24" src="<?php echo $this->basePath('/img/uzik.png') ?>">
+                            </div>
+
+                        </li>
+                        <?php
+                            echo $this->navigation('Admin\Navigation')
+                                ->setAcl($this->acl)
+                                ->setRole($user->getLogin())
+                                ->menu()
+                                ->setPartial('partial/navigation.phtml');
+                        ?>
+                        <?php endif; ?>
+                    </ul>
+
+                </div>
+            </nav>
+
+            <div id="page-wrapper" class="white-bg">
+            <div class="row border-bottom">
+            <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <a class="navbar-minimalize minimalize-styl-2 btn btn-white " href="#"><i class="fa fa-bars"></i> </a>
+
+            </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message"><?php echo $this->translate('Welcome to Uzik Admin') ?>.</span>
+                    </li>
+                    <?php if($user = $this->identity()): ?>
+                    <li>
+                        <a href="<?php echo $this->url('admin/default', array('action' => 'logout', 'controller' => 'user')) ?>">
+                            <i class="fa fa-sign-out"></i> <?php echo $this->translate('Log out') ?>
+                        </a>
+                    </li>
+                    <?php endif; ?>
+                </ul>
+
+            </nav>
+            </div>
+                <div class="row wrapper border-bottom white-bg page-heading">
+                    <div class="col-xs-12">
+                        <?php
+                            $controller = $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('__CONTROLLER__');
+                            $action = $this->getHelperPluginManager()->getServiceLocator()->get('Application')->getMvcEvent()->getRouteMatch()->getParam('action');
+                        ?>
+                        <h2><?php echo ucfirst($controller) ?> > <?php echo ucfirst($action) ?></h2>
+                        <?php
+                            echo $this->navigation('Admin\Navigation')
+                                ->breadcrumbs()
+                                ->setPartial('partial/breadcrumbs.phtml');
+                        ?>
+                    </div>
+                </div>
+            <div class="row border-bottom white-bg">
+                <div class="col-xs-12">
+                    <div class="wrapper wrapper-content">
+                        <?php
+
+                            $flash = $this->flashMessenger();
+                            $flash->setMessageOpenFormat('<div%s>
+                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                     &times;
+                                 </button>')
+                                ->setMessageSeparatorString('<br>')
+                                ->setMessageCloseString('</div>');
+
+                            echo $flash->renderCurrent('error',   array('alert', 'alert-dismissable', 'alert-danger'));
+                            echo $flash->renderCurrent('warning', array('alert', 'alert-dismissable', 'alert-warning'));
+                            echo $flash->renderCurrent('info',    array('alert', 'alert-dismissable', 'alert-info'));
+                            echo $flash->renderCurrent('default', array('alert', 'alert-dismissable', 'alert-warning'));
+                            echo $flash->renderCurrent('success', array('alert', 'alert-dismissable', 'alert-success'));
+                            $flash->clearCurrentMessagesFromNamespace('error');
+                            $flash->clearCurrentMessagesFromNamespace('warning');
+                            $flash->clearCurrentMessagesFromNamespace('info');
+                            $flash->clearCurrentMessagesFromNamespace('default');
+                            $flash->clearCurrentMessagesFromNamespace('success');
+
+                        ?>
+
+                        <?php echo $this->content; ?>
+                    </div>
+                </div>
+            </div>
+                <div class="footer fixed">
+                    <div>
+                        &copy; <?php echo date('Y') ?> <?php echo $this->translate('by') ?> <a href="http://uzik.com" target="_blank">Uzik</a>. <?php echo $this->translate('All rights reserved.') ?>
+                    </div>
+                </div>
+
+            </div>
+            </div>
+        </div>
+
+        <!-- Scripts -->
+        <?php echo $this->headScript()
+            /* DEFAULT */
+            ->appendFile($this->basePath() . '/js/plugins/jquery-1.10.2.js')
+            ->appendFile($this->basePath() . '/js/plugins/jquery-ui/jquery-ui.min.js')
+            ->appendFile($this->basePath() . '/js/plugins/bootstrap.min.js')
+            ->appendFile($this->basePath() . '/js/plugins/metisMenu/jquery.metisMenu.js')
+            ->appendFile($this->basePath() . '/js/plugins/slimscroll/jquery.slimscroll.min.js')
+            ->appendFile($this->basePath() . '/js/plugins/pace/pace.min.js')
+            /* PLUGINS */
+            ->appendFile($this->basePath() . '/js/plugins/dataTables/jquery.dataTables.js')
+            ->appendFile($this->basePath() . '/js/plugins/dataTables/dataTables.bootstrap.js')
+            ->appendFile($this->basePath() . '/js/plugins/iCheck/icheck.min.js')
+            ->appendFile($this->basePath() . '/js/plugins/chosen/chosen.jquery.js')
+            /* THEME */
+            ->appendFile($this->basePath() . '/js/app/inspinia.js')
+
+        ; ?>
+
+        <!-- Inline Scripts -->
+        <?php echo $this->inlineScript() ?>
+    </body>
+</html>
