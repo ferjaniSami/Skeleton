@@ -14,6 +14,7 @@ return array(
 		'DoctrineModule',
 		'DoctrineORMModule',
 		'Aggregator',
+		'Admin',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
