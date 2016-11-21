@@ -11,7 +11,8 @@ return array(
         'Application',
 		'Artist',
 		'ZendDeveloperTools',
-		'BjyProfiler',
+		'DoctrineModule',
+		'DoctrineORMModule',
 		'Aggregator',
     ),
 
