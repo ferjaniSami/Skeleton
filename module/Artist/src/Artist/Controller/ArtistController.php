@@ -7,6 +7,9 @@ use Zend\View\Model\ViewModel;
 use Artist\Entity\Artist;
 use Artist\Form\ArtistForm;
 use Doctrine\ORM\EntityManager;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator as DoctrineAdapter;
+use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
+use Zend\Paginator\Paginator;
 
 class ArtistController extends AbstractActionController
 {
@@ -21,9 +24,18 @@ class ArtistController extends AbstractActionController
     }
 	public function indexAction()
     {
-        return new ViewModel(array(
-            'artists' => $this->getEntityManager()->getRepository('Artist\Entity\Artist')->findAll(),
-        ));
+        $view =  new ViewModel();
+   
+	   //$entityManager = $this->getServiceLocator()->get('doctrine.entitymanager.orm_default');
+	   $repository = $this->getEntityManager()->getRepository('Artist\Entity\Artist');
+	   $adapter = new DoctrineAdapter(new ORMPaginator($repository->createQueryBuilder('artist')));
+	   $paginator = new Paginator($adapter);
+	   $paginator->setDefaultItemCountPerPage(5);
+	   
+	   $page = (int)$this->params()->fromQuery('page');
+	   if($page) $paginator->setCurrentPageNumber($page);
+	   
+	   return $view->setVariable('paginator',$paginator);
     }
 
 	public function addAction()

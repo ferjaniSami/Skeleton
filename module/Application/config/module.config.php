@@ -101,4 +101,33 @@ return array(
             ),
         ),
     ),
+	'navigation' => [
+        'default' => [
+            [
+                'label' => 'Home',
+                'route' => 'home',
+            ],
+            [
+                'label' => 'Artist',
+                'route' => 'artist',
+                'pages' => [
+                    [
+                        'label'  => 'Add',
+                        'route'  => 'artist',
+                        'action' => 'add',
+                    ],
+                    [
+                        'label'  => 'Edit',
+                        'route'  => 'artist',
+                        'action' => 'edit',
+                    ],
+                    [
+                        'label'  => 'Delete',
+                        'route'  => 'artist',
+                        'action' => 'delete',
+                    ],
+                ],
+            ],
+        ],
+    ],
 );

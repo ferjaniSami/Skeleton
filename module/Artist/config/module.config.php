@@ -19,7 +19,8 @@ return array(
                          'id'     => '[0-9]+',
                      ),
                      'defaults' => array(
-                         'controller' => 'Artist\Controller\Artist',
+						 '__NAMESPACE__' => 'Artist\Controller',
+                         'controller' => 'Artist',
                          'action'     => 'index',
                      ),
                  ),
