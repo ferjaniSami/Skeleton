@@ -16,8 +16,7 @@ class IndexController extends AbstractActionController
 {
     public function indexAction()
     {
-        /*$aggregator = $this->getServiceLocator()->get('aggregator');
-    	die(print_r($aggregator->getPosts(0, 10)));*/
-		return new ViewModel();
+        $aggregator = $this->getServiceLocator()->get('aggregator');
+		return new ViewModel(array('posts' => $aggregator->getPosts(0, 1000)));
     }
 }

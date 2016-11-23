@@ -15,7 +15,7 @@ return array(
 		'DoctrineORMModule',
 		'Aggregator',
 		'Zend\Navigation',
-		'Zend\Paginator'
+		'Zend\Paginator',
     ),
 
     // These are various options for the listeners attached to the ModuleManager
